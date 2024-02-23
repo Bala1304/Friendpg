@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            transition: all 0.3s;
+            overflow: hidden;
+            max-height: 0;
+        }
+
+        form.active {
+            max-height: 500px; /* Adjust based on content */
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .google-button {
+            background-color: #dd4b39;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .google-button:hover {
+            background-color: #c23321;
+        }
+    </style>
+</head>
+<body>
+    <button id="manualToggle" onclick="toggleManualRegistration()">Register Manually</button>
+
+    <form id="manualRegistration" action="register.php" method="post">
+        <h1>Manual Registration</h1>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <div>
+        <p>Or register using:</p>
+        <div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>
+        <button class="google-button" onclick="signInWithGoogle()">Register with Google</button>
+    </div>
+
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <script>
+        function onLoad() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init({
+                    client_id: '678317957050-aa2pt1ks5gh837n7sc71colse3skaa26.apps.googleusercontent.com', // Replace with your actual OAuth 2.0 Client ID
+                });
+            });
+        }
+
+        function toggleManualRegistration() {
+            var manualRegistrationForm = document.getElementById('manualRegistration');
+            manualRegistrationForm.classList.toggle('active');
+        }
+
+        function signInWithGoogle() {
+            gapi.auth2.getAuthInstance().signIn().then(onGoogleSignIn);
+        }
+
+        function onGoogleSignIn(googleUser) {
+            // Handle Google Sign-In success here
+            var profile = googleUser.getBasicProfile();
+            alert("Google Sign-In successful!\nUser ID: " + profile.getId() + "\nName: " + profile.getName());
+        }
+    </script>
+</body>
+</html>
